@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JULES</title>
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(#020824, #050f3b);
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.hint {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.gallery {
+    position: relative;
+    height: 650px;
+    margin-top: 30px;
+}
+
+.polaroid {
+    position: absolute;
+    width: 150px;
+    background: white;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: transform 0.3s ease;
+    animation: float 4s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    0% { transform: rotate(var(--rotate)) translateY(0px); }
+    50% { transform: rotate(var(--rotate)) translateY(-8px); }
+    100% { transform: rotate(var(--rotate)) translateY(0px); }
+}
+
+.polaroid img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* positions fixes bien dispersées */
+.p1 { top: 20px; left: 15%; --rotate: -8deg; transform: rotate(-8deg); }
+.p2 { top: 60px; left: 40%; --rotate: 7deg; transform: rotate(7deg); }
+.p3 { top: 50px; left: 70%; --rotate: -6deg; transform: rotate(-6deg); }
+.p4 { top: 283px; left: 10%; --rotate: 7deg; transform: rotate(7deg); }
+.p5 { top: 297px; left: 56%; --rotate: -6deg; transform: rotate(-6deg); }
+.p6 { bottom: 24px; left: 31%; --rotate: 8deg; transform: rotate(8deg); }
+.p7 { bottom: 15px; left: 79%; --rotate: 9deg; transform: rotate(-7deg); }
+
+/* overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.overlay-content {
+    text-align: center;
+    max-width: 90%;
+    animation: zoomIn 0.6s ease;
+}
+
+.overlay img {
+    width: 350px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.message {
+    font-size: 1.5em;
+    line-height: 1.5;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.55); opacity: 0; }
+    to { transform: scale(1.1); opacity: 1; }
+}
+
+/* responsive mobile */
+@media screen and (max-width: 500px) {
+    .gallery { height: auto; min-height: 650px; }
+    .polaroid {
+        width: 120px;
+        position: relative;
+        margin: 15px auto;
+        display: block;
+        transform: rotate(var(--rotate)) !important;
+    }
+    .polaroid img { height: 160px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>bonjour m'sieur</h2>
+    <div class="hint">long press sur les photos</div>
+
+    <div class="gallery">
+        <div class="polaroid p1" data-message="Il est rare de voir quelqu’un d’aussi captivant❤️"><img src="photo1.jpeg"></div>
+        <div class="polaroid p2" data-message="Are you even legal? you’re too addictive..."><img src="photo2.jpeg"></div>
+        <div class="polaroid p3" data-message="j’ai toujours l’impression que le monde est un peu plus lumineux quand tu souris💙"><img src="photo3.jpeg"></div>
+        <div class="polaroid p4" data-message="Quit being so incredible… I can’t deal with it💖"><img src="photo4.jpeg"></div>
+        <div class="polaroid p5" data-message="Je n’étais pas prête pour ton charme😍"><img src="photo5.jpeg"></div>
+        <div class="polaroid p6" data-message="an amazing talent for making the simplest things magical✨"><img src="photo6.jpeg"></div>
+        <div class="polaroid p7" data-message="Genre tu me charmes là?😏"><img src="photo7.jpeg"></div>
+    </div>
+</div>
+
+<!-- Overlay -->
+<div class="overlay" id="overlay">
+    <div class="overlay-content">
+        <img id="overlayImg">
+        <div class="message" id="overlayMsg"></div>
+        <div style="opacity:0.7;font-size:0.9em;margin-top:10px;">(tap to close)</div>
+    </div>
+</div>
+
+<script>
+let pressTimer;
+const polaroids = document.querySelectorAll('.polaroid');
+
+polaroids.forEach(p => {
+    p.addEventListener('touchstart', () => { pressTimer = setTimeout(() => showOverlay(p), 500); });
+    p.addEventListener('touchend', () => clearTimeout(pressTimer));
+    p.addEventListener('mousedown', () => { pressTimer = setTimeout(() => showOverlay(p), 500); });
+    p.addEventListener('mouseup', () => clearTimeout(pressTimer));
+});
+
+function showOverlay(p) {
+    document.getElementById('overlayImg').src = p.querySelector('img').src;
+    document.getElementById('overlayMsg').innerText = p.dataset.message;
+    document.getElementById('overlay').style.display = 'flex';
+}
+
+document.getElementById('overlay').addEventListener('click', () => {
+    document.getElementById('overlay').style.display = 'none';
+});
+</script>
+
+</body>
+</html>
