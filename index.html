@@ -106,16 +106,29 @@ h1 {
 }
 
 /* responsive mobile */
-@media screen and (max-width: 500px) {
-    .gallery { height: auto; min-height: 650px; }
-    .polaroid {
-        width: 120px;
-        position: relative;
-        margin: 15px auto;
-        display: block;
-        transform: rotate(var(--rotate)) !important;
-    }
-    .polaroid img { height: 160px; }
+@media screen and (max-width: 600px) {
+
+  .gallery {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+    height: auto;
+  }
+
+  .polaroid {
+    position: relative;
+    width: 100%;
+    max-width: 160px;
+    margin: auto;
+    animation: float 4s ease-in-out infinite alternate;
+  }
+
+  .polaroid img {
+    height: 180px;
+  }
+
 }
 </style>
 </head>
@@ -170,3 +183,4 @@ document.getElementById('overlay').addEventListener('click', () => {
 
 </body>
 </html>
+
